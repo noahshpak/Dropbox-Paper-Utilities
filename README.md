@@ -1,5 +1,5 @@
 # Dropbox-Paper-Utilities
-examples of using Dropbox's API  [ Personal Project ]
+examples of using Dropbox's API 
 
 
 ## Pull that Data 
