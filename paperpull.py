@@ -92,4 +92,5 @@ def pull_and_save():
     docs = { _id: {'folder': get_folder_info(_id, i=i, n=n), 'text': get_text(_id)} for i, _id in enumerate(doc_ids)}
     pickle.dump(docs, open('paper_docs.p', "wb"))
 
-pull_and_save()
+if __name__ == '__main__':
+    pull_and_save()
