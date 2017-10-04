@@ -8,7 +8,11 @@ examples of using Dropbox's API
 3. Run the script
 `` python paperpull.py ``
 #### What's going on?
-This script grabs all of your Paper Documents, their Folder info, and lumps the text into a blob for later manipulation.  For more detailed scraping of the HTML, you can modify the HTMLParser class defined in paperpull.py
+This script grabs all of your Paper Documents, their Folder info, and lumps the text into a blob for later manipulation.
+
+This data is stored in a Pickle file called 'paper_docs.p'
+
+For more detailed scraping of the HTML, you can modify the HTMLParser class defined in paperpull.py
 
 ## Working with the Pickle Files
 a few line snippets to get you started
