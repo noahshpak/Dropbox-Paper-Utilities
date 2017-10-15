@@ -4,9 +4,12 @@ import json
 import cPickle as pickle
 from HTMLParser import HTMLParser
 
-ACCESS_TOKEN = 'YOUR TOKEN HERE'
+# config file contains ACCESS_TOKEN
+import paperpull_config
+
 
 class PaperHTMLParser(HTMLParser):
+
     def __init__(self):
         # initialize the base class
         HTMLParser.__init__(self)
@@ -14,10 +17,13 @@ class PaperHTMLParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         pass
+
     def handle_endtag(self, tag):
         pass
+
     def handle_data(self, data):
         self.doc.append(data)
+
 
 def get_doc_ids():
     url = "https://api.dropboxapi.com/2/paper/docs/list"
@@ -41,7 +47,8 @@ def get_doc_ids():
         data = {
             "cursor": response_data['cursor']['value']
         }
-        response_data = requests.post(url, headers=headers, data=json.dumps(data))
+        response_data = requests.post(
+            url, headers=headers, data=json.dumps(data))
         paper_doc_ids.extend(response_data['doc_ids'])
 
     return paper_doc_ids
@@ -50,7 +57,7 @@ def get_doc_ids():
 def get_folder_info(doc_id, i=None, n=None):
     # NOTE: i, n for printing progress
     if i and n:
-        print 'Gathering {i} of {n}'.format(i=i,n=n)
+        print 'Gathering {i} of {n}'.format(i=i, n=n)
 
     url = "https://api.dropboxapi.com/2/paper/docs/get_folder_info"
 
@@ -65,6 +72,7 @@ def get_folder_info(doc_id, i=None, n=None):
 
     r = requests.post(url, headers=headers, data=json.dumps(data))
     return r.json().get('folders', [None])[0]
+
 
 def get_text(doc_id):
     url = "https://api.dropboxapi.com/2/paper/docs/download"
@@ -86,10 +94,12 @@ def get_text(doc_id):
     parser.feed(doc_as_html)
     return " ".join(parser.doc)
 
+
 def pull_and_save():
     doc_ids = get_doc_ids()
     n = len(doc_ids)
-    docs = { _id: {'folder': get_folder_info(_id, i=i, n=n), 'text': get_text(_id)} for i, _id in enumerate(doc_ids)}
+    docs = {_id: {'folder': get_folder_info(_id, i=i, n=n), 'text': get_text(
+        _id)} for i, _id in enumerate(doc_ids)}
     pickle.dump(docs, open('paper_docs.p', "wb"))
 
 if __name__ == '__main__':
